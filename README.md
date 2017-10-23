@@ -22,3 +22,4 @@ Navigate to supported websites and:
 * Sign in
 * Right click anywhere on the site -> choose "inspect element" -> go to "console" tab
 * Paste the script into the console and hit enter
+* Click enable sounds 
