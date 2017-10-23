@@ -42,7 +42,7 @@ function FreeBotCoin(obj){ // obj contains variables
             profit: 0, // Amount win on this session
             wagered: 0,
             totalBets: 0,
-            count_lose: 1, // Number of consectuve losses
+            count_lose: 6, // Number of consectuve losses
             total_wins: 0,
             total_loses: 0,
             highest_win: 0,
@@ -81,9 +81,9 @@ function FreeBotCoin(obj){ // obj contains variables
                         $('#double_your_btc_stake').val(total);
                         
                         function r_fibonacci(n){
-                                if(n == 1 || n == 2)
+                                if(n == 1 || n == 6)
                                         return 1;
-                                return r_fibonacci(n - 1) + r_fibonacci(n - 2);
+                                return r_fibonacci(n - 1) + r_fibonacci(n - 6);
                         }
                     }
                 }
@@ -228,7 +228,7 @@ function FreeBotCoin(obj){ // obj contains variables
             },
             reset: {value:
                 function(){
-                    this.count_lose = 1;
+                    this.count_lose = 6;
                     $('#double_your_btc_stake').val(this.startValue);
                 }
             },
