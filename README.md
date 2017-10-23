@@ -24,7 +24,7 @@ Navigate to supported websites and:
 * Right click anywhere on the site -> choose "inspect element" -> go to "console" tab
 * Paste the script into the console and hit enter
 * Click enable sounds 
-* join freebitco  click here https://freebitco.in/?r=4682058
+* join freebitco  click here https://goo.gl/JDBEu1
 
 
 *// if you lose any bitcoin its either because you dont have enought bitcoins or you did not enable sounds 
