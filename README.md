@@ -17,7 +17,7 @@ Bot bet
 ## How to use
 Follow these general steps to proceed:
 
-Navigate to supported websites and:
+Navigate to  website below and
 * Create an account if you don't already have one
 * Sign in
 * deposit or free roll up to $1.20 usd in in botcoin or at lease 0.000120000 btc  to start this will keep from defaluting 
