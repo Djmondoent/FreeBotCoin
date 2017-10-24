@@ -42,7 +42,7 @@ function FreeBotCoin(obj){ // obj contains variables
             profit: 0, // Amount win on this session
             wagered: 0,
             totalBets: 0,
-            count_lose: 6, // Number of consectuve losses
+            count_lose: 3, // Number of consectuve losses
             total_wins: 0,
             total_loses: 0,
             highest_win: 0,
@@ -70,6 +70,14 @@ function FreeBotCoin(obj){ // obj contains variables
                 {
                     multiply: 
                     function(){
+                        let currentValue = $("#double_your_btc_stake").val();
+
+function doubleCurrentValue(val) {
+    $("#double_your_btc_stake").val((val * 2).toFixed(8));
+}
+
+if (this.count_lose <= 5) doubleCurrentValue(currentValue);
+                        
                         var current = $('#double_your_btc_stake').val();
                         var multiply = (current * 2).toFixed(8);
                         $('#double_your_btc_stake').val(multiply);
@@ -81,9 +89,9 @@ function FreeBotCoin(obj){ // obj contains variables
                         $('#double_your_btc_stake').val(total);
                         
                         function r_fibonacci(n){
-                                if(n == 1 || n == 6)
+                                if(n == 1 || n == 16)
                                         return 1;
-                                return r_fibonacci(n - 1) + r_fibonacci(n - 6);
+                                return r_fibonacci(n - 1) + r_fibonacci(n - 16);
                         }
                     }
                 }
@@ -132,8 +140,8 @@ function FreeBotCoin(obj){ // obj contains variables
 
                     // Unbind old shit
                     $('#double_your_btc_bet_lose').unbind();
-                    $('#double_your_btc_bet_win').unbind();
                     // Loser
+                   f
                     $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){
                             if( $(event.currentTarget).is(':contains("lose")') )
                             {             
@@ -153,7 +161,7 @@ function FreeBotCoin(obj){ // obj contains variables
                                     }
 
                                     setTimeout(function(){
-                                            ref.$loButton.trigger('click');
+                                            ref.$hiButton.trigger('click');
                                     }, ref.getRandomWait());
                             }
                     });
@@ -193,14 +201,14 @@ function FreeBotCoin(obj){ // obj contains variables
                                             console.log('You WON! Betting again');
                                     }
                                     setTimeout(function(){
-                                            ref.$loButton.trigger('click');
+                                            ref.$hiButton.trigger('click');
                                     }, ref.getRandomWait());
                             }
                     });
 
 
                     this.reset();
-                    this.$loButton.trigger('click');
+                    this.$hiButton.trigger('click');
                     
                     
 
@@ -228,7 +236,7 @@ function FreeBotCoin(obj){ // obj contains variables
             },
             reset: {value:
                 function(){
-                    this.count_lose = 6;
+                    this.count_lose = 20;
                     $('#double_your_btc_stake').val(this.startValue);
                 }
             },
