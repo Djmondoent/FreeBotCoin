@@ -141,7 +141,7 @@ if (this.count_lose <= 5) doubleCurrentValue(currentValue);
                     // Unbind old shit
                     $('#double_your_btc_bet_lose').unbind();
                     // Loser
-                   f
+                   
                     $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){
                             if( $(event.currentTarget).is(':contains("lose")') )
                             {             
