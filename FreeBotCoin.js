@@ -76,7 +76,7 @@ function doubleCurrentValue(val) {
     $("#double_your_btc_stake").val((val * 2).toFixed(8));
 }
 
-if (this.count_lose <= 5) doubleCurrentValue(currentValue);
+if (this.count_lose => 5) doubleCurrentValue(currentValue);
                         
                         var current = $('#double_your_btc_stake').val();
                         var multiply = (current * 2).toFixed(8);
