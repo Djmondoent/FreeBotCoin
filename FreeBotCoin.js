@@ -42,7 +42,7 @@ function FreeBotCoin(obj){ // obj contains variables
             profit: 0, // Amount win on this session
             wagered: 0,
             totalBets: 0,
-            count_lose: 1, // Number of consectuve losses
+            count_lose: 4, // Number of consectuve losses
             total_wins: 0,
             total_loses: 0,
             highest_win: 0,
@@ -153,7 +153,7 @@ function FreeBotCoin(obj){ // obj contains variables
                                     }
 
                                     setTimeout(function(){
-                                            ref.$loButton.trigger('click');
+                                            ref.$hiButton.trigger('click');
                                     }, ref.getRandomWait());
                             }
                     });
@@ -193,14 +193,14 @@ function FreeBotCoin(obj){ // obj contains variables
                                             console.log('You WON! Betting again');
                                     }
                                     setTimeout(function(){
-                                            ref.$loButton.trigger('click');
+                                            ref.$hiButton.trigger('click');
                                     }, ref.getRandomWait());
                             }
                     });
 
 
                     this.reset();
-                    this.$loButton.trigger('click');
+                    this.$hiButton.trigger('click');
                     
                     
 
@@ -228,7 +228,7 @@ function FreeBotCoin(obj){ // obj contains variables
             },
             reset: {value:
                 function(){
-                    this.count_lose = 1;
+                    this.count_lose = 4;
                     $('#double_your_btc_stake').val(this.startValue);
                 }
             },
