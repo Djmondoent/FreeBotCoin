@@ -42,7 +42,7 @@ function FreeBotCoin(obj){ // obj contains variables
             profit: 0, // Amount win on this session
             wagered: 0,
             totalBets: 0,
-            count_lose: 5, // Number of consectuve losses
+            count_lose: 0, // Number of consectuve losses
             total_wins: 0,
             total_loses: 0,
             highest_win: 0,
@@ -52,9 +52,9 @@ function FreeBotCoin(obj){ // obj contains variables
         var defaultValues = {
             startValue: '0.00000001',
             mode: 'multiply',
-            stopPercentage: 0.001,
-            maxWait: 500,     
-            stopBefore: 3, // In Minutes  
+            stopPercentage: 0.0000001,
+            maxWait: 400,     
+            stopBefore: 2, // In Minutes  
             $loButton: $('#double_your_btc_bet_lo_button'),
             $hiButton: $('#double_your_btc_bet_hi_button'),
             container: $("#bet_history_table"), // Chart Container
@@ -73,10 +73,10 @@ function FreeBotCoin(obj){ // obj contains variables
                         let currentValue = $("#double_your_btc_stake").val();
 
 function doubleCurrentValue(val) {
-    $("#double_your_btc_stake").val((val * 2).toFixed(8));
+    $("#double_your_btc_stake").val((val * 2).toFixed(4));
 }
 
-if (this.count_lose = 5) doubleCurrentValue(currentValue);
+if (this.count_lose = 4) doubleCurrentValue(currentValue);
                         
                         var current = $('#double_your_btc_stake').val();
                         var multiply = (current * 2).toFixed(8);
@@ -85,7 +85,7 @@ if (this.count_lose = 5) doubleCurrentValue(currentValue);
                     fibonacci:
                     function(){
                         //var current = $('#double_your_btc_stake').val();
-                        var total = r_fibonacci(this.count_lose) * this.startValue;
+                        var total = r_fibonacci(this.count_lose * 4) * this.startValue;
                         $('#double_your_btc_stake').val(total);
                         
                         function r_fibonacci(n){
