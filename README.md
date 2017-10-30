@@ -27,7 +27,9 @@ Navigate to  website below and
 * join freebitco  click here https://goo.gl/JDBEu1
 * make sure you have enough bitcoins to make it pass the 15 losing strek 
 >
-![alt text](screenshots/freebitcoin cheating Screenshot_2.png "screenshot")
+# losing streak
+
+![alt text](screenshots/freebitcoin_cheating_Screenshot_2.png "screenshot")
 
 
 *// if you lose any bitcoin its either because you dont have enought bitcoins or you did not enable sounds 
