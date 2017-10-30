@@ -26,7 +26,7 @@ Navigate to  website below and
 * Click enable sounds 
 * join freebitco  click here https://goo.gl/JDBEu1
 * make sure you have enough bitcoins to make it pass the 15 losing strek 
-![alt text](freebitcoin cheating Screenshot_2.png"screenshot")
+![alt text](screencshots/freebitcoin cheating Screenshot_2.png"screenshot")
 
 
 *// if you lose any bitcoin its either because you dont have enought bitcoins or you did not enable sounds 
