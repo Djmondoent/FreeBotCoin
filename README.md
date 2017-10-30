@@ -27,7 +27,7 @@ Navigate to  website below and
 * join freebitco  click here https://goo.gl/JDBEu1
 * make sure you have enough bitcoins to make it pass the 15 losing strek 
 >
-# losing streak
+# beaware of losing streak
 
 ![alt text](screenshots/losingstreak.png "screenshot")
 
