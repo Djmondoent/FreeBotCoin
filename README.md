@@ -29,7 +29,7 @@ Navigate to  website below and
 >
 # losing streak
 
-![alt text](screenshots/freebitcoin cheating Screenshot_2.png "screenshot")
+![alt text](screenshots/losingstreak.png "screenshot")
 
 
 *// if you lose any bitcoin its either because you dont have enought bitcoins or you did not enable sounds 
