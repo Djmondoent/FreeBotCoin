@@ -50,10 +50,10 @@ function FreeBotCoin(obj){ // obj contains variables
         };
 
         var defaultValues = {
-            startValue: '0.00000001',
+            startValue: '0.00000010',
             mode: 'multiply',
             stopPercentage: 0.001,
-            maxWait: 500,     
+            maxWait: 2000,     
             stopBefore: 3, // In Minutes  
             $loButton: $('#double_your_btc_bet_lo_button'),
             $hiButton: $('#double_your_btc_bet_hi_button'),
