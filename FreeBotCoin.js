@@ -1,3 +1,4 @@
+
 /* Javascript plotting library for jQuery, version 0.8.3.
 
 Copyright (c) 2007-2014 IOLA and Ole Laursen.
@@ -90,7 +91,7 @@ function FreeBotCoin(obj){ // obj contains variables
             },
             getRandomWait: {value:
                 function(){
-                    var wait = Math.floor(Math.random() * this.maxWait ) + 100;
+                    var wait = Math.floor(Math.random() * this.maxWait ) + 90;
                     console.log('Waiting for ' + wait + 'ms before next bet.');
                     return wait ;
                 }
@@ -134,28 +135,41 @@ function FreeBotCoin(obj){ // obj contains variables
                     $('#double_your_btc_bet_lose').unbind();
                     $('#double_your_btc_bet_win').unbind();
                     // Loser
-                    $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){
-                            if( $(event.currentTarget).is(':contains("lose")') )
-                            {             
-                                    ref.total_loses++;
-                                    
-                                    if(ref.highest_lose < parseFloat(ref.betAmount.val())){
-                                        ref.highest_lose = parseFloat(ref.betAmount.val());
-                                    }                                    
+                  // Loser
+    $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){
+    if( $(event.currentTarget).is(':contains("lose")') )
+    {             
+        ref.total_loses++;
+        
+        if(ref.highest_lose < parseFloat(ref.betAmount.val())){
+            ref.highest_lose = parseFloat(ref.betAmount.val());
+        }
 
-                                    showLogs();
-                                    ref.profit = parseFloat($("#balance").html()) - ref.initialValue;
-                                    ref.addData([ref.totalBets++,ref.profit]);
-                                    
-                                    // Mode
-                                    if(!ref.modes[ref.mode]()){
-                                        ref.mode = 'multiply';
-                                    }
+        showLogs();
+        ref.profit = parseFloat($("#balance").html()) - ref.initialValue;
+        ref.addData([ref.totalBets++,ref.profit]);
+        
+        // Increment consecutive lose count
+        ref.count_lose++;
 
-                                    setTimeout(function(){
-                                            ref.$hiButton.trigger('click');
-                                    }, ref.getRandomWait());
-                            }
+        // Check if lost more than 7 times in a row
+        if(ref.count_lose > 7) {
+            console.log('Lost more than 7 times in a row, restarting betting sequence.');
+            ref.reset();
+            ref.count_lose = 0; // Reset lose count
+        } else {
+            // Mode
+            if(!ref.modes[ref.mode]()){
+                ref.mode = 'multiply';
+            }
+        }
+
+        setTimeout(function(){
+            ref.$hiButton.trigger('click');
+        }, ref.getRandomWait());
+    }
+
+
                     });
 
 
