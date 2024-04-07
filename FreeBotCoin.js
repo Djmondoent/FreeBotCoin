@@ -30,10 +30,6 @@ Licensed under the MIT license.
  *   *  /\---/\ 
  *      ~~   ~~   
  *  ...."Have you mooed today?"...
-
-Modified 4/3/2023  @djmondoent  @dabitcointraphouse @ministerbillions 
-
- 
  * 
  */
 
@@ -55,10 +51,10 @@ function FreeBotCoin(obj){ // obj contains variables
         };
 
         var defaultValues = {
-            startValue: '0.00000010',
+            startValue: '0.00000001',
             mode: 'multiply',
-            stopPercentage: 0.001,
-            maxWait: 2000,     
+            stopPercentage: 0.0001,
+            maxWait: 1508,     
             stopBefore: 3, // In Minutes  
             $loButton: $('#double_your_btc_bet_lo_button'),
             $hiButton: $('#double_your_btc_bet_hi_button'),
@@ -95,7 +91,7 @@ function FreeBotCoin(obj){ // obj contains variables
             },
             getRandomWait: {value:
                 function(){
-                    var wait = Math.floor(Math.random() * this.maxWait ) + 90;
+                    var wait = Math.floor(Math.random() * this.maxWait ) + 100;
                     console.log('Waiting for ' + wait + 'ms before next bet.');
                     return wait ;
                 }
@@ -139,8 +135,8 @@ function FreeBotCoin(obj){ // obj contains variables
                     $('#double_your_btc_bet_lose').unbind();
                     $('#double_your_btc_bet_win').unbind();
                     // Loser
-                  // Loser
-    $('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){
+                // Loser
+$('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){
     if( $(event.currentTarget).is(':contains("lose")') )
     {             
         ref.total_loses++;
@@ -156,9 +152,9 @@ function FreeBotCoin(obj){ // obj contains variables
         // Increment consecutive lose count
         ref.count_lose++;
 
-        // Check if lost more than 7 times in a row
-        if(ref.count_lose > 7) {
-            console.log('Lost more than 7 times in a row, restarting betting sequence.');
+        // Check if lost more than 8 times in a row
+        if(ref.count_lose > 8) {
+            console.log('Lost more than 8 times in a row, restarting betting sequence.');
             ref.reset();
             ref.count_lose = 0; // Reset lose count
         } else {
@@ -172,9 +168,8 @@ function FreeBotCoin(obj){ // obj contains variables
             ref.$hiButton.trigger('click');
         }, ref.getRandomWait());
     }
+});
 
-
-                    });
 
 
                    
