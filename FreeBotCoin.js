@@ -33,94 +33,56 @@ Licensed under the MIT license.
  * 
  */
 
-function FreeBotCoin(obj){ // obj contains variables
-    if(this != window){
-        // Do not change these values
+
+function FreeBotCoin(obj) {
+    if (this != window) {
         var privateVariables = {
             stopped: false,
             chart: null,
             initialValue: 0,
-            profit: 0, // Amount win on this session
+            profit: 0,
             wagered: 0,
             totalBets: 0,
-            count_lose: 4, // Number of consectuve losses
+            consecutiveWins: 0,
             total_wins: 0,
             total_loses: 0,
             highest_win: 0,
-            highest_lose: 0
+            highest_lose: 0,
+            baseBet: '0.00000001',
+            currentBet: '0.00000001',
+            betIncrement: '0.000000001',
+            profitTarget: '0.00000100',
+            lossLimit: '0.00001000'
         };
 
         var defaultValues = {
-            startValue: '0.00000001',
-            mode: 'multiply',
             stopPercentage: 0.0001,
-            maxWait: 1508,     
-            stopBefore: 3, // In Minutes  
+            maxWait: 1508,
+            stopBefore: 3,
             $loButton: $('#double_your_btc_bet_lo_button'),
             $hiButton: $('#double_your_btc_bet_hi_button'),
-            container: $("#bet_history_table"), // Chart Container
+            container: $("#bet_history_table"),
             betAmount: $('#double_your_btc_stake')
         };
-        
-        // You can also receive properties for custom use
-        __clearObj(obj,privateVariables);// Prevents obj from changing private properties
+
+        __clearObj(obj, privateVariables);
         __copyObj(defaultValues, privateVariables, obj, this);
 
-        Object.defineProperties(this,{
-            modes:{value:
-                {
-                    multiply: 
-                    function(){
-                        var current = $('#double_your_btc_stake').val();
-                        var multiply = (current * 2).toFixed(8);
-                        $('#double_your_btc_stake').val(multiply);
-                    },
-                    fibonacci:
-                    function(){
-                        //var current = $('#double_your_btc_stake').val();
-                        var total = r_fibonacci(this.count_lose) * this.startValue;
-                        $('#double_your_btc_stake').val(total);
-                        
-                        function r_fibonacci(n){
-                                if(n == 1 || n == 2)
-                                        return 1;
-                                return r_fibonacci(n - 1) + r_fibonacci(n - 2);
-                        }
-                    }
-                }
-            },
-            getRandomWait: {value:
-                function(){
-                    var wait = Math.floor(Math.random() * this.maxWait ) + 100;
+        Object.defineProperties(this, {
+            getRandomWait: {
+                value: function() {
+                    var wait = Math.floor(Math.random() * this.maxWait) + 100;
                     console.log('Waiting for ' + wait + 'ms before next bet.');
-                    return wait ;
+                    return wait;
                 }
             },
-            startGame: {value:
-                function(){
+            startGame: {
+                value: function() {
                     this.initialValue = parseFloat($("#balance").html());
-                    console.log(this.initialValue);
-                    if(this.chart == null){
-                            this.container.prepend("<div class='plot'></div>");
-                            $(".plot").css({"width":"100%","height":"300px"});
-                            var options = {
-                                    series: {
-                                            points: {show: false},
-                                            shadowSize: 0	// Drawing is faster without shadows
-                                    },
-                                    xaxis: {
-                                            min: 0,
-                                            minTickSize: 10,
-                                            show: true
-                                    }
-                            };
-                            this.chart = $.plot($(".plot"),[[]],options);
-                    }
-                    var ref = this;
-                    
                     console.log('Game started!');
+                    var ref = this;
 
-                    function showLogs(){
+                    function showLogs() {
                         console.clear();
                         ref.wagered += parseFloat(ref.betAmount.val());
                         console.log("Beginning Balance: " + ref.initialValue);
@@ -131,173 +93,136 @@ function FreeBotCoin(obj){ // obj contains variables
                         console.log('%cHighest bet: ' + ref.highest_win.toFixed(8) + ' %c' + ref.highest_lose.toFixed(8), 'color: #007a5c', 'color: #FF0000');
                     }
 
-                    // Unbind old shit
                     $('#double_your_btc_bet_lose').unbind();
                     $('#double_your_btc_bet_win').unbind();
-                    // Loser
-                // Loser
-$('#double_your_btc_bet_lose').bind("DOMSubtreeModified",function(event){
-    if( $(event.currentTarget).is(':contains("lose")') )
-    {             
-        ref.total_loses++;
-        
-        if(ref.highest_lose < parseFloat(ref.betAmount.val())){
-            ref.highest_lose = parseFloat(ref.betAmount.val());
-        }
 
-        showLogs();
-        ref.profit = parseFloat($("#balance").html()) - ref.initialValue;
-        ref.addData([ref.totalBets++,ref.profit]);
-        
-        // Increment consecutive lose count
-        ref.count_lose++;
+                    $('#double_your_btc_bet_lose').bind("DOMSubtreeModified", function(event) {
+                        if ($(event.currentTarget).is(':contains("lose")')) {
+                            ref.total_loses++;
+                            ref.consecutiveWins = 0;
 
-        // Check if lost more than 8 times in a row
-        if(ref.count_lose > 8) {
-            console.log('Lost more than 8 times in a row, restarting betting sequence.');
-            ref.reset();
-            ref.count_lose = 0; // Reset lose count
-        } else {
-            // Mode
-            if(!ref.modes[ref.mode]()){
-                ref.mode = 'multiply';
-            }
-        }
-
-        setTimeout(function(){
-            ref.$hiButton.trigger('click');
-        }, ref.getRandomWait());
-    }
-});
-
-
-
-                   
-                    // Winner
-                    $('#double_your_btc_bet_win').bind("DOMSubtreeModified",function(event){
-                            if( $(event.currentTarget).is(':contains("win")') )
-                            {
-                                    ref.total_wins++;
-
-                                    if(ref.highest_win < parseFloat(ref.betAmount.val())){
-                                        ref.highest_win = parseFloat(ref.betAmount.val());
-                                    }
-
-                                    showLogs();
-                                    ref.profit = parseFloat($("#balance").html()) - ref.initialValue;
-                                    ref.addData([ref.totalBets++,ref.profit]);
-                                    
-                                    if( ref.stopBeforeRedirect() )
-                                    {
-                                            return;
-                                    }
-                                    if( ref.iHaveEnoughMoni() )
-                                    {
-                                            //console.log('You WON! But don\'t be greedy. Restarting!');
-                                            ref.reset();
-                                            if( ref.stopped )
-                                            {
-                                                    ref.stopped = false;
-                                                    return false;
-                                            }
-                                    }
-                                    else
-                                    {
-                                            console.log('You WON! Betting again');
-                                    }
-                                    setTimeout(function(){
-                                            ref.$hiButton.trigger('click');
-                                    }, ref.getRandomWait());
+                            if (ref.highest_lose < parseFloat(ref.betAmount.val())) {
+                                ref.highest_lose = parseFloat(ref.betAmount.val());
                             }
+
+                            showLogs();
+                            ref.profit = parseFloat($("#balance").html()) - ref.initialValue;
+                            ref.resetBet();
+
+                            setTimeout(function() {
+                                ref.$hiButton.trigger('click');
+                            }, ref.getRandomWait());
+                        }
                     });
 
+                    $('#double_your_btc_bet_win').bind("DOMSubtreeModified", function(event) {
+                        if ($(event.currentTarget).is(':contains("win")')) {
+                            ref.total_wins++;
+                            ref.consecutiveWins++;
 
-                    this.reset();
+                            if (ref.highest_win < parseFloat(ref.betAmount.val())) {
+                                ref.highest_win = parseFloat(ref.betAmount.val());
+                            }
+
+                            showLogs();
+                            ref.profit = parseFloat($("#balance").html()) - ref.initialValue;
+
+                            if (ref.stopBeforeRedirect()) {
+                                return;
+                            }
+
+                            if (ref.consecutiveWins == 3) {
+                                ref.aggressiveBet();
+                            } else {
+                                ref.increaseBet();
+                            }
+
+                            ref.checkProfitAndLoss();
+
+                            setTimeout(function() {
+                                ref.$hiButton.trigger('click');
+                            }, ref.getRandomWait());
+                        }
+                    });
+
+                    this.resetBet();
                     this.$hiButton.trigger('click');
-                    
-                    
-
-                    
                 }
             },
-            addData: {value:
-                function(point){
-                    if(point == undefined || point == null) return;
+            addData: {
+                value: function(point) {
+                    if (point == undefined || point == null) return;
                     var series = this.chart.getData()[0].data;
-                    if(series == undefined || series[0] == undefined)
-                            series = [point];
-                    else 
-                            series.push(point);
+                    if (series == undefined || series[0] == undefined)
+                        series = [point];
+                    else
+                        series.push(point);
                     this.chart.setupGrid();
                     this.chart.setData([series]);
                     this.chart.draw();
                 }
             },
-            stopGame: {value:
-                function(){
-                    console.log('Game will stop soon! Let me finish.');
-                    this.stopped = true;
+            stopGame: {
+                value: function() {
+                console.log('Game will stop soon! Let me finish.');
+                this.stopped = true;
                 }
             },
-            reset: {value:
-                function(){
-                    this.count_lose = 4;
-                    $('#double_your_btc_stake').val(this.startValue);
+            resetBet: {
+                value: function() {
+                this.consecutiveWins = 0;
+                this.currentBet = this.baseBet;
+                $('#double_your_btc_stake').val(this.currentBet);
                 }
             },
-            deexponentize: {value:
-                function(number){
-                    return number * 1000000;
+            increaseBet: {
+                value: function() {
+                this.currentBet = (parseFloat(this.currentBet) + parseFloat(this.betIncrement)).toFixed(8);
+                $('#double_your_btc_stake').val(this.currentBet);
                 }
             },
-            iHaveEnoughMoni: {value:
-                function(){
-                    var balance = this.deexponentize(parseFloat($('#balance').text()));
-                    var current = this.deexponentize($('#double_your_btc_stake').val());
-                    return ((balance*2)/100) * (current*2) > this.stopPercentage/100;
+            aggressiveBet: {
+                value: function() {
+                this.currentBet = (parseFloat(this.currentBet) * 1.5).toFixed(8);
+                $('#double_your_btc_stake').val(this.currentBet);
                 }
             },
-            stopBeforeRedirect: {value:
-                function(){
-                    var minutes = parseInt($('title').text());
-                    if( minutes < this.stopBefore )
-                    {
-                            console.log('Approaching redirect! Stop the game so we don\'t get redirected while loosing.');
-                            this.stopGame();
-                            return true;
-                    }
-                    return false;
+            checkProfitAndLoss: {
+                value: function() {
+                var currentProfit = parseFloat($("#balance").html()) - this.initialValue;
+                if (currentProfit >= parseFloat(this.profitTarget) || currentProfit <= -parseFloat(this.lossLimit)) {
+                    this.stopGame();
+                    console.log('Profit target or loss limit reached. Stopping the game.');
                 }
-            }            
+                }
+            }
         });
-
     }
 
-    function __clearObj(obj, exc){// Delete exc properties in obj
-        for(var a in obj)
-            if(a in exc)
+    function __clearObj(obj, exc) {
+        for (var a in obj)
+            if (a in exc)
                 delete obj[a];
-        return obj;        
+        return obj;
     }
 
-    // Required minimums two arguments
-    function __copyObj(/*..., destiny*/){ // Last parameter is the destination 
-        if(arguments.length < 2) return false;
-        var destiny = arguments[arguments.length-1];
-        if( !destiny || typeof destiny != 'object') return false;
-        
+    function __copyObj(/*..., destiny*/) {
+        if (arguments.length < 2) return false;
+        var destiny = arguments[arguments.length - 1];
+        if (!destiny || typeof destiny != 'object') return false;
+
         var bool = false;
-        for(var i = 0; i < arguments.length-1; i++){
+        for (var i = 0; i < arguments.length - 1; i++) {
             var arg = arguments[i];
-            if( !arg || typeof arg != 'object') continue;
+            if (!arg || typeof arg != 'object') continue;
             bool = true;
-            for(var a in arg){
+            for (var a in arg) {
                 destiny[a] = arg[a];
             }
         }
-        if(!bool) return false;
+        if (!bool) return false;
         return destiny;
-    } 
-        
+    }
 }
+
 new FreeBotCoin().startGame();
